@@ -12,7 +12,7 @@ jobs:
   build:
     strategy:
       matrix:
-        image_name: ["order", "shipping","inventory"]
+        image_name: ["order", "shipping", "inventory"]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -26,7 +26,7 @@ jobs:
 
       - name: Build
         working-directory: ${{ matrix.image_name }}
-        run:
+        run: |
           ./gradlew bootJar
           mv build/libs/$(ls build/libs) app.jar
 
@@ -46,10 +46,10 @@ jobs:
       - name: Build and push ${{ matrix.image_name }}
         uses: docker/build-push-action@v4
         with:
-          context: $${{ matrix.image_name }}
+          context: ${{ matrix.image_name }}
           file: ${{ matrix.image_name }}/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          secrets:
+          secrets: |
             GITHUB_TOKEN=${{ secrets.GH_TOKEN }}
