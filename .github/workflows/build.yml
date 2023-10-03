@@ -24,7 +24,13 @@ jobs:
           java-version: 17
           distribution: "corretto"
 
-      - name: Grant gradle
+      - name: Change wrapper permissions
+        run: chmod +x ./gradlew
+
+      - name: Init gradle wrapper
+        run: gradle wrapper
+
+      - name: Change wrapper permissions
         run: chmod +x ./gradlew
 
       - name: Build
